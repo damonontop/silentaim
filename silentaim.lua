@@ -94,8 +94,10 @@ game:GetService"RunService".Stepped:connect(function()
     end
 end)
 
-local old
-old = hookmetamethod(game, "__namecall", function(...)
+local mt = getrawmetatable(game)
+local old = mt.__namecall
+setreadonly(mt, false)
+mt.__namecall = newcclosure(function(...)
     local args = {...}
     if enabled and getnamecallmethod() == "FireServer" and args[2] == "MousePos" then
         args[3] = Plr.Character.HumanoidRootPart.Position+(Plr.Character.HumanoidRootPart.Velocity*accomidationfactor)
